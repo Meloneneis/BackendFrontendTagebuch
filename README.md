@@ -1,1 +1,3 @@
 # BackendTagebuch
+
+SQLite ArrayListAdapter CustomAdapter
