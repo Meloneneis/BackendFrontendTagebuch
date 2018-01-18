@@ -1,8 +1,9 @@
 package com.example.niklas.backendtagebuch.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Entry {
+public class Entry implements Serializable{
     private String title;
     private Calendar date;
     private long id;
@@ -36,7 +37,5 @@ public class Entry {
         return this.id;
     }
 
-    public void setId(long ID){
-        this.id = ID;
-    }
+    public void setId(long ID){ this.id = ID;}
 }
