@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.CursorAdapter;
 
 import com.example.niklas.backendtagebuch.model.Entry;
 
@@ -18,12 +19,12 @@ import java.util.List;
 
 public class EntryDatabase extends SQLiteOpenHelper {
     public static EntryDatabase INSTANCE = null;
-    private static final String DB_NAME = "ENTRIES";
-    private static final int VERSION = 1;
-    private static final String TABLE_NAME= "entries";
-    private static final String TITLE_COLUMN = "title";
-    private static final String ID_COLUMN =  "ID";
-    private static final String DATE_COLUMN = "date";
+    public static final String DB_NAME = "ENTRIES";
+    public static final int VERSION = 1;
+    public static final String TABLE_NAME= "entries";
+    public static final String TITLE_COLUMN = "title";
+    public static final String ID_COLUMN =  "ID";
+    public static final String DATE_COLUMN = "date";
     public EntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
@@ -120,6 +121,18 @@ public class EntryDatabase extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         database.execSQL("DELETE FROM "+TABLE_NAME);
         database.close();
+    }
+
+    public Cursor getAllEntriesAsCursor(){
+        return this.getReadableDatabase().rawQuery("SELECT " + ID_COLUMN + " as _id, " + TITLE_COLUMN + "," + DATE_COLUMN + " FROM " + TABLE_NAME, null);
+    }
+
+    public Entry getFirstEntry(){
+        List<Entry> entries = this.readAllEntries();
+        if(entries.size() > 0){
+            return entries.get(0);
+        }
+        return  null;
     }
 
 }

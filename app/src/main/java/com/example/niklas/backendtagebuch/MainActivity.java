@@ -19,7 +19,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
         private ListView listView;
-        private List<Entry> data;
         private EntryOverviewListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +30,8 @@ public class MainActivity extends AppCompatActivity {
         Button btndeleteall = (Button) findViewById(R.id.btndeleteall);
         Button btndeletefirst = (Button) findViewById(R.id.btndeletefirst);
 
-        this.data = EntryDatabase.getInstance(this).readAllEntries();
         /*data.add(new Entry("bla", Calendar.getInstance()));*/
-        this.adapter = new EntryOverviewListAdapter(this, data);
+        this.adapter = new EntryOverviewListAdapter(this, EntryDatabase.getInstance(this).getAllEntriesAsCursor());
         this.listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     EntryDatabase database = EntryDatabase.getInstance(MainActivity.this);
-                    if(data.size()> 0){
-                        database.deleteEntry(data.get(0));
+                    Entry first = database.getFirstEntry();
+                    if(first != null){
+                        database.deleteEntry(first);
                         refreshListView();
                     }
                 }
@@ -77,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshListView(){
-        data.clear();
-        data.addAll(EntryDatabase.getInstance(this).readAllEntries());
-        adapter.notifyDataSetChanged();
+        adapter.changeCursor(EntryDatabase.getInstance(this).getAllEntriesAsCursor());
     }
 }
