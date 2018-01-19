@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     EntryDatabase database = EntryDatabase.getInstance(MainActivity.this);
-                    database.createEntry(new Entry("bla", Calendar.getInstance()));
+                    database.createEntry(new Entry("bla", Calendar.getInstance(), "CONTENT"));
                     refreshListView();
                 }
             });

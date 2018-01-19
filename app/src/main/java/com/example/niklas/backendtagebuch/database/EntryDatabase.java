@@ -20,11 +20,12 @@ import java.util.List;
 public class EntryDatabase extends SQLiteOpenHelper {
     public static EntryDatabase INSTANCE = null;
     public static final String DB_NAME = "ENTRIES";
-    public static final int VERSION = 4;
+    public static final int VERSION = 5;
     public static final String TABLE_NAME= "entries";
     public static final String TITLE_COLUMN = "title";
     public static final String ID_COLUMN =  "ID";
     public static final String DATE_COLUMN = "date";
+    public static final String CONTENT_COLUMN = "content";
     public EntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
@@ -38,7 +39,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + TITLE_COLUMN + " TEXT NOT NULL, " + DATE_COLUMN + " INTEGER NOT NULL)";
+        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + TITLE_COLUMN + " TEXT NOT NULL, " + DATE_COLUMN + " INTEGER NOT NULL, " + CONTENT_COLUMN + " TEXT NOT NULL)";
         db.execSQL(createQuery);
     }
 
@@ -54,6 +55,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE_COLUMN,entry.getTitle());
         values.put(DATE_COLUMN,entry.getDate().getTimeInMillis() / 1000);
+        values.put(CONTENT_COLUMN, entry.getContent());
 
         long newID = database.insert(TABLE_NAME,null,values);
         database.close();
@@ -63,13 +65,14 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     public Entry readEntry(final long id){
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_NAME, new String []{ID_COLUMN,TITLE_COLUMN,DATE_COLUMN}, ID_COLUMN + " = ?", new String[]{String.valueOf(id)},null,null,null );
+        Cursor cursor = database.query(TABLE_NAME, new String []{ID_COLUMN,TITLE_COLUMN,DATE_COLUMN,CONTENT_COLUMN}, ID_COLUMN + " = ?", new String[]{String.valueOf(id)},null,null,null );
         Entry entry = null;
 
         if(cursor != null && cursor.getCount() > 0){
             cursor.moveToFirst();
             entry = new Entry(cursor.getString(cursor.getColumnIndex(TITLE_COLUMN)));
             entry.setId(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)));
+            entry.setContent(cursor.getString(cursor.getColumnIndex(CONTENT_COLUMN)));
 
             Calendar calendar = null;
             if(!cursor.isNull(cursor.getColumnIndex(DATE_COLUMN))){
@@ -105,6 +108,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TITLE_COLUMN, entry.getTitle());
         values.put(DATE_COLUMN, entry.getDate() == null ? null: entry.getDate().getTimeInMillis() /1000);
+        values.put(CONTENT_COLUMN, entry.getContent());
         database.update(TABLE_NAME, values, ID_COLUMN + " = ?", new String[]{String.valueOf(entry.getId())} );
         database.close();
         return this.readEntry(entry.getId());

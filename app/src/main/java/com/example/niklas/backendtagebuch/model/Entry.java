@@ -6,16 +6,21 @@ import java.util.Calendar;
 public class Entry implements Serializable{
     private String title;
     private Calendar date;
+    private String content;
     private long id;
 
+    public Entry (){
+        this(null,null,null);
+    }
     public Entry(String title){
-            this(title,null);
+            this(title,null, null);
 
         }
 
-    public Entry(String title, Calendar date) {
+    public Entry(String title, Calendar date, String content) {
         this.title = title;
         this.date = date;
+        this.content = content;
     }
 
     public String getTitle() {
@@ -39,4 +44,10 @@ public class Entry implements Serializable{
     }
 
     public void setId(long ID){ this.id = ID;}
+
+    public String getContent() {return content; }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
