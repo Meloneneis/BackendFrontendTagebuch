@@ -14,9 +14,11 @@ import com.example.niklas.backendtagebuch.model.Entry;
 
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
         private ListView listView;
+        private List<Entry> data;
         private EntryOverviewListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +26,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.listView = (ListView) findViewById(R.id.entries);
+        this.data = EntryDatabase.getInstance(this).readAllEntries();
         Button btnnew = (Button) findViewById(R.id.btnnew);
         Button btndeleteall = (Button) findViewById(R.id.btndeleteall);
         Button btndeletefirst = (Button) findViewById(R.id.btndeletefirst);
         Button btnsort = (Button) findViewById(R.id.btnsort);
 
         /*data.add(new Entry("bla", Calendar.getInstance()));*/
-        this.adapter = new EntryOverviewListAdapter(this, EntryDatabase.getInstance(this).getAllEntriesAsCursor());
+        this.adapter = new EntryOverviewListAdapter(this, data);
         this.listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -101,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshListView(){
-        adapter.changeCursor(EntryDatabase.getInstance(this).getAllEntriesAsCursor());
+        data.clear();
+        data.addAll(EntryDatabase.getInstance(this).readAllEntries());
+        adapter.notifyDataSetChanged();
     }
 }

@@ -9,8 +9,9 @@ public class Entry implements Serializable{
     private long id;
 
     public Entry(String title){
-        this(title,null);
-    }
+            this(title,null);
+
+        }
 
     public Entry(String title, Calendar date) {
         this.title = title;

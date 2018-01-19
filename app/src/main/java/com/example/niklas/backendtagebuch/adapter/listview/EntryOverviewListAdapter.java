@@ -17,25 +17,32 @@ import com.example.niklas.backendtagebuch.model.Entry;
 import java.util.Calendar;
 import java.util.List;
 
-public class EntryOverviewListAdapter extends CursorAdapter  {
+public class EntryOverviewListAdapter extends ArrayAdapter<Entry>  {
 
-    public EntryOverviewListAdapter(final Context context, final Cursor cursor){
-        super(context,cursor,0);
+    public EntryOverviewListAdapter(final Context context, final List<Entry> objects){
+        super(context,0,objects);
 
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return LayoutInflater.from(context).inflate(R.layout.entry_overview_listitem, viewGroup , false);
-    }
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
+        Entry currentToDo = getItem(position);
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        ((TextView) view.findViewById(R.id.titletv)).setText(cursor.getString(cursor.getColumnIndex(EntryDatabase.TITLE_COLUMN)));
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(cursor.getInt(cursor.getColumnIndex(EntryDatabase.DATE_COLUMN))*1000);
+        View view = convertView;
+
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.entry_overview_listitem, parent, false);
+        }
+
+        ((TextView) view.findViewById(R.id.titletv)).setText(currentToDo.getTitle());
+
         TextView date = (TextView) view.findViewById(R.id.datetv);
-        date.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+
+
+        date.setText(String.valueOf(currentToDo.getDate().get(Calendar.YEAR)));
+
+        return view;
+
     }
 
     /*

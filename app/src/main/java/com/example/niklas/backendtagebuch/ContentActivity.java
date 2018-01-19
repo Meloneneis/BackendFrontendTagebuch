@@ -9,6 +9,7 @@ import com.example.niklas.backendtagebuch.model.Entry;
 public class ContentActivity extends AppCompatActivity {
 
     public static final String ENTRY_ID_KEY = "ID";
+    private Entry entry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +17,6 @@ public class ContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content);
 
         long id = getIntent().getLongExtra(ENTRY_ID_KEY,0);
-        Entry entry = EntryDatabase.getInstance(this).readEntry(id);
+        this.entry = EntryDatabase.getInstance(this).readEntry(id);
     }
 }
