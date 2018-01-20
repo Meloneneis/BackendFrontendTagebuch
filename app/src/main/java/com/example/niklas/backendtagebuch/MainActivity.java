@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Button btndeleteall = (Button) findViewById(R.id.btndeleteall);
         Button btndeletefirst = (Button) findViewById(R.id.btndeletefirst);
         Button btnsort = (Button) findViewById(R.id.btnsort);
+        Button newEntrybtn = (Button) findViewById(R.id.createEntry);
 
         /*data.add(new Entry("bla", Calendar.getInstance()));*/
         this.adapter = new EntryOverviewListAdapter(this, data);
@@ -52,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        newEntrybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,CreateNewEntry.class);
+                startActivity(intent);
+            }
+        });
         /* not working yet loool
         if(btnsort != null){
             btnsort.setOnClickListener(new View.OnClickListener() {

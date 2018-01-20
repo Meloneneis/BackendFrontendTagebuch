@@ -9,10 +9,16 @@ import android.widget.TextView;
 
 import com.example.niklas.backendtagebuch.database.EntryDatabase;
 import com.example.niklas.backendtagebuch.model.Entry;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 
-public class ContentActivity extends AppCompatActivity {
+public class ContentActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     public static final String ENTRY_ID_KEY = "ID";
     TextView title;
@@ -20,6 +26,7 @@ public class ContentActivity extends AppCompatActivity {
     TextView content;
     private Entry entry;
     Button share;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,8 @@ public class ContentActivity extends AppCompatActivity {
         date=(TextView) findViewById(R.id.date);
         content=(TextView) findViewById(R.id.content);
         share=(Button) findViewById(R.id.share);
+        MapFragment fragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment);
+        fragment.getMapAsync(this);
         this.entry = EntryDatabase.getInstance(this).readEntry(id);
         title.setText(entry.getTitle());
         date.setText(getDateInString(entry.getDate()));
@@ -50,5 +59,12 @@ public class ContentActivity extends AppCompatActivity {
 
     private String getDateInString(Calendar calendar){
         return calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.YEAR);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng position = new LatLng(0,0);
+        googleMap.addMarker(new MarkerOptions().position(position));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,15));
     }
 }

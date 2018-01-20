@@ -20,7 +20,7 @@ import java.util.List;
 public class EntryDatabase extends SQLiteOpenHelper {
     public static EntryDatabase INSTANCE = null;
     public static final String DB_NAME = "ENTRIES";
-    public static final int VERSION = 1;
+    public static final int VERSION = 7;
     public static final String TABLE_NAME= "entries";
     public static final String TITLE_COLUMN = "title";
     public static final String ID_COLUMN =  "ID";
