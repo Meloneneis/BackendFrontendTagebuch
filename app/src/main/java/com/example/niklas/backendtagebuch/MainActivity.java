@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     EntryDatabase database = EntryDatabase.getInstance(MainActivity.this);
-                    database.createEntry(new Entry("bla", Calendar.getInstance(), "CONTENT"));
+                    database.createEntry(new Entry("Cooler Titel", Calendar.getInstance(), "Liebes Tagebuch, heute war ich sehr fleißig und habe eine share Funktion in unsere App eingebaut."));
                     refreshListView();
                 }
             });
