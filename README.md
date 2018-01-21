@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # BackendTagebuch
 
 <TextView
@@ -19,4 +19,3 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="15dp"
         android:text="TextView" />
->>>>>>> master
