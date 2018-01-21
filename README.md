@@ -1,10 +1,6 @@
 <<<<<<< HEAD
 # BackendTagebuch
 
-SQLite ArrayListAdapter CustomAdapter
-=======
-# BackendTagebuch
-
 <TextView
         android:id="@+id/titletv"
         android:layout_width="150dp"
