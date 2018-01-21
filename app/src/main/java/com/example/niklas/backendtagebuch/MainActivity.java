@@ -27,13 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         this.listView = (ListView) findViewById(R.id.entries);
         this.data = EntryDatabase.getInstance(this).readAllEntries();
-        Button btnnew = (Button) findViewById(R.id.btnnew);
         Button btndeleteall = (Button) findViewById(R.id.btndeleteall);
         Button btndeletefirst = (Button) findViewById(R.id.btndeletefirst);
-        Button btnsort = (Button) findViewById(R.id.btnsort);
         Button newEntrybtn = (Button) findViewById(R.id.createEntry);
-
-        /*data.add(new Entry("bla", Calendar.getInstance()));*/
         this.adapter = new EntryOverviewListAdapter(this, data);
         this.listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        refreshListView();
         newEntrybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,32 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /* not working yet loool
-        if(btnsort != null){
-            btnsort.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    adapter.btnsort(new Comparator<Entry>()){
-                        public int compare(final Entry entry, final Entry e1){
-                            return 0;
-                        }
-                    }
 
-                }
-            });
-        }
-        */
-
-        if(btnnew != null){
-            btnnew.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EntryDatabase database = EntryDatabase.getInstance(MainActivity.this);
-                    database.createEntry(new Entry("Cooler Titel", Calendar.getInstance(), "Liebes Tagebuch, heute war ich sehr fleißig und habe eine share Funktion in unsere App eingebaut."));
-                    refreshListView();
-                }
-            });
-        }
         if(btndeleteall != null){
             btndeleteall.setOnClickListener(new View.OnClickListener() {
                 @Override

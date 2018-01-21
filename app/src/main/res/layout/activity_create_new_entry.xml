@@ -12,43 +12,34 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:ems="10"
+        android:hint="enter title"
         android:inputType="textPersonName"
-        android:text="enter title"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="47dp" />
-
-    <EditText
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="enter date"
-        app:layout_constraintTop_toBottomOf="@+id/title"
         tools:layout_editor_absoluteX="47dp" />
 
     <EditText
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="enter text"
         android:inputType="textPersonName"
-        android:text="enter text"
         app:layout_constraintTop_toBottomOf="@+id/date"
-        tools:layout_editor_absoluteX="47dp" />
+        tools:layout_editor_absoluteX="38dp" />
 
     <Button
         android:id="@+id/locate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:text="locate me"
         app:layout_constraintBottom_toTopOf="@+id/fragment2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content"
-        tools:layout_editor_absoluteX="142dp" />
+        app:layout_constraintVertical_bias="0.748" />
 
     <fragment
         android:id="@+id/fragment2"
@@ -61,5 +52,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="back"
+        app:layout_constraintEnd_toStartOf="@+id/locate"
+        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintStart_toEndOf="@+id/save"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="enter date"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:layout_editor_absoluteX="38dp" />
 
 </android.support.constraint.ConstraintLayout>

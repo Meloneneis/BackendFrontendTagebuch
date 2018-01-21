@@ -8,24 +8,23 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.CursorAdapter;
 
 import com.example.niklas.backendtagebuch.model.Entry;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by Yannick on 18.01.18.
- */
-
 public class EntryDatabase extends SQLiteOpenHelper {
     public static EntryDatabase INSTANCE = null;
     public static final String DB_NAME = "ENTRIES";
-    public static final int VERSION = 7;
+    public static final int VERSION = 11;
     public static final String TABLE_NAME= "entries";
     public static final String TITLE_COLUMN = "title";
     public static final String ID_COLUMN =  "ID";
     public static final String DATE_COLUMN = "date";
     public static final String CONTENT_COLUMN = "content";
+    public static final String LATITUDE_COLMUN = "latitude";
+    public static final String LONGITUDE_COLUMN = "longitude";
     public EntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
@@ -39,7 +38,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + TITLE_COLUMN + " TEXT NOT NULL, " + DATE_COLUMN + " INTEGER NOT NULL, " + CONTENT_COLUMN + " TEXT NOT NULL)";
+        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + TITLE_COLUMN + " TEXT NOT NULL, " + DATE_COLUMN + " TEXT NOT NULL, " + CONTENT_COLUMN + " TEXT NOT NULL, " + LATITUDE_COLMUN + " REAL DEFAULT NULL, " + LONGITUDE_COLUMN + " REAL DEFAULT NULL)";
         db.execSQL(createQuery);
     }
 
@@ -54,8 +53,10 @@ public class EntryDatabase extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TITLE_COLUMN,entry.getTitle());
-        values.put(DATE_COLUMN,entry.getDate().getTimeInMillis() / 1000);
+        values.put(DATE_COLUMN,entry.getDate());
         values.put(CONTENT_COLUMN, entry.getContent());
+        values.put(LATITUDE_COLMUN,entry.getLocation().latitude);
+        values.put(LONGITUDE_COLUMN,entry.getLocation().longitude);
 
         long newID = database.insert(TABLE_NAME,null,values);
         database.close();
@@ -65,7 +66,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     public Entry readEntry(final long id){
         SQLiteDatabase database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_NAME, new String []{ID_COLUMN,TITLE_COLUMN,DATE_COLUMN,CONTENT_COLUMN}, ID_COLUMN + " = ?", new String[]{String.valueOf(id)},null,null,null );
+        Cursor cursor = database.query(TABLE_NAME, new String []{ID_COLUMN,TITLE_COLUMN,DATE_COLUMN,CONTENT_COLUMN,LATITUDE_COLMUN,LONGITUDE_COLUMN}, ID_COLUMN + " = ?", new String[]{String.valueOf(id)},null,null,null );
         Entry entry = null;
 
         if(cursor != null && cursor.getCount() > 0){
@@ -74,12 +75,9 @@ public class EntryDatabase extends SQLiteOpenHelper {
             entry.setId(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)));
             entry.setContent(cursor.getString(cursor.getColumnIndex(CONTENT_COLUMN)));
 
-            Calendar calendar = null;
-            if(!cursor.isNull(cursor.getColumnIndex(DATE_COLUMN))){
-                calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(cursor.getInt(cursor.getColumnIndex(DATE_COLUMN)) * 1000);
-            }
-            entry.setDate(calendar);
+
+            entry.setDate(cursor.getString(cursor.getColumnIndex(DATE_COLUMN)));
+            entry.setLocation(new LatLng(cursor.getFloat(cursor.getColumnIndex(LATITUDE_COLMUN)),cursor.getFloat(cursor.getColumnIndex(LONGITUDE_COLUMN))));
         }
 
         database.close();
@@ -107,8 +105,10 @@ public class EntryDatabase extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(TITLE_COLUMN, entry.getTitle());
-        values.put(DATE_COLUMN, entry.getDate() == null ? null: entry.getDate().getTimeInMillis() /1000);
+        values.put(DATE_COLUMN, entry.getDate());
         values.put(CONTENT_COLUMN, entry.getContent());
+        values.put(LATITUDE_COLMUN, entry.getLocation().latitude);
+        values.put(LONGITUDE_COLUMN, entry.getLocation().longitude);
         database.update(TABLE_NAME, values, ID_COLUMN + " = ?", new String[]{String.valueOf(entry.getId())} );
         database.close();
         return this.readEntry(entry.getId());

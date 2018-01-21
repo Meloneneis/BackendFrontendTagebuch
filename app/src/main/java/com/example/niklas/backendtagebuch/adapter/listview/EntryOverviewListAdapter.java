@@ -26,7 +26,7 @@ public class EntryOverviewListAdapter extends ArrayAdapter<Entry>  {
 
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
-        Entry currentToDo = getItem(position);
+        Entry currentEntry = getItem(position);
 
         View view = convertView;
 
@@ -34,35 +34,15 @@ public class EntryOverviewListAdapter extends ArrayAdapter<Entry>  {
             view = LayoutInflater.from(getContext()).inflate(R.layout.entry_overview_listitem, parent, false);
         }
 
-        ((TextView) view.findViewById(R.id.titletv)).setText(currentToDo.getTitle());
+        ((TextView) view.findViewById(R.id.titletv)).setText(currentEntry.getTitle());
 
         TextView date = (TextView) view.findViewById(R.id.datetv);
 
 
-        date.setText(String.valueOf(currentToDo.getDate().get(Calendar.YEAR)));
+        date.setText(currentEntry.getDate());
 
         return view;
 
     }
 
-    /*
-    public EntryOverviewListAdapter(final Context context, final List<Entry> objects){
-        super(context, 0, objects);
-    }
-
-    @Override
-    public View getView (final int postion, final View convertView, final ViewGroup parent) {
-        Entry currententry = getItem(postion);
-        View view = convertView;
-        if (view == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.entry_overview_listitem, parent, false);
-
-        }
-        ((TextView) view.findViewById(R.id.titletv)).setText(currententry.getTitle());
-        TextView date = (TextView) view.findViewById(R.id.datetv);
-        date.setText(String.valueOf(currententry.getDate().get(Calendar.YEAR)));
-        return view;
-    }
-
-    */
 }

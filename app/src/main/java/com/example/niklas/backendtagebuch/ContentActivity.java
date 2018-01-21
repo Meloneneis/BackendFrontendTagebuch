@@ -42,14 +42,14 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
         fragment.getMapAsync(this);
         this.entry = EntryDatabase.getInstance(this).readEntry(id);
         title.setText(entry.getTitle());
-        date.setText(getDateInString(entry.getDate()));
+        date.setText(entry.getDate());
         content.setText(entry.getContent());
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String text = entry.getTitle() + "\nverfasst am " + getDateInString(entry.getDate())+ ":\n" + entry.getContent();
+                String text = entry.getTitle() + "\nverfasst am " + entry.getDate()+ ":\n" + entry.getContent();
                 intent.putExtra(Intent.EXTRA_TEXT, text);
                 startActivity(Intent.createChooser(intent, "Teile deinen Tag mit:"));
             }
@@ -57,14 +57,9 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-    private String getDateInString(Calendar calendar){
-        return calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.YEAR);
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng position = new LatLng(0,0);
-        googleMap.addMarker(new MarkerOptions().position(position));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,15));
+        googleMap.addMarker(new MarkerOptions().position(entry.getLocation()));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(entry.getLocation(),15));
     }
 }
