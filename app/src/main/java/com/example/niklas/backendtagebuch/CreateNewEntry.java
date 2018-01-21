@@ -28,21 +28,24 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public Marker marker;
     public LocationManager locationManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_entry);
 
         this.locateme = (Button) findViewById(R.id.locate);
+
         Intent intent = getIntent();
+
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment2);
         mapFragment.getMapAsync(this);
+
         this.locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         if (this.locateme != null) {
             this.locateme.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View view) {
                     searchPosition();
                 }
             });
@@ -51,18 +54,10 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
 
     public void searchPosition() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            this.requestPermission();
+            this.requestPermission(5);
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, this);
-
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, this);
     }
 
     @Override
@@ -73,13 +68,23 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onLocationChanged(Location location) {
         LatLng position = new LatLng(location.getLatitude(),location.getLongitude());
+
         if(this.map != null) {
+
             if (this.marker != null) {
-                marker.remove();
+                this.marker.remove();
             }
             this.marker = map.addMarker(new MarkerOptions().position(position));
             this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
         }
+        removeListener();
+    }
+
+    private void removeListener(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            this.requestPermission(4);
+        }
+        this.locationManager.removeUpdates(this);
     }
 
     @Override
@@ -96,8 +101,8 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public void onProviderDisabled(String provider) {
 
     }
-    public void requestPermission(){
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION}, 5);
+    public void requestPermission(final int resultCode){
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION}, resultCode);
     }
 
     @Override
@@ -107,7 +112,14 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     searchPosition();
                 }
+                break;
+            case 4:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    removeListener();
+                }
+                break;
         }
 
     }
+
 }
