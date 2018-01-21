@@ -144,6 +144,12 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CreateNewEntry.this, MainActivity.class);
+        startActivity(intent);
+    }
+
 
 
     public void searchPosition() {
