@@ -38,9 +38,14 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public LocationManager locationManager;
     public EditText title;
     public EditText content;
-    public EditText date;
     public Button save;
     public Entry entry;
+    public EditText date_day;
+    public EditText date_month;
+    public EditText date_year;
+    public String day;
+    public String month;
+    public String year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,9 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.title = (EditText) findViewById(R.id.title);
         this.content = (EditText) findViewById(R.id.content);
         this.back = (Button) findViewById(R.id.back);
-        this.date = (EditText) findViewById(R.id.date);
+        this.date_day = (EditText) findViewById(R.id.date_day);
+        this.date_month = (EditText) findViewById(R.id.date_month);
+        this.date_year = (EditText) findViewById(R.id.date_year);
 
         Intent intent = getIntent();
 
@@ -70,23 +77,6 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
                 }
             });
         }
-
-        this.date.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(final Editable editable) {
-                entry.setDate(editable.toString().length() == 0 ? null : editable.toString());
-            }
-        });
 
         this.title.addTextChangedListener(new TextWatcher() {
             @Override
@@ -125,6 +115,7 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                entry.setDate(date_day.getText()+"."+date_month.getText()+"."+date_year.getText());
                 if((entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
                     Toast.makeText(CreateNewEntry.this, "Fehler beim Speichern, bitte alle Angababen befüllen.", Toast.LENGTH_SHORT).show();
                     return;

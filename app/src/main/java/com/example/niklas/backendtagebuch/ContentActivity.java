@@ -13,10 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.Calendar;
 
 public class ContentActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -26,6 +23,7 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
     TextView content;
     private Entry entry;
     Button share;
+    Button delete;
 
 
     @Override
@@ -35,9 +33,10 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
 
         long id = getIntent().getLongExtra(ENTRY_ID_KEY,0);
         title=(TextView) findViewById(R.id.title);
-        date=(TextView) findViewById(R.id.date);
+        date=(TextView) findViewById(R.id.date_day);
         content=(TextView) findViewById(R.id.content);
         share=(Button) findViewById(R.id.share);
+        delete = (Button) findViewById(R.id.delete);
         MapFragment fragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment);
         fragment.getMapAsync(this);
         this.entry = EntryDatabase.getInstance(this).readEntry(id);
@@ -55,6 +54,16 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EntryDatabase database = EntryDatabase.getInstance(ContentActivity.this);
+                database.deleteEntry(entry);
+                Intent intent = new Intent(ContentActivity.this, MainActivity.class);
+                startActivity(intent);;
+
+            }
+        });
     }
 
     @Override
