@@ -49,9 +49,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/longitude" />
 
     <Button
         android:id="@+id/save"
@@ -113,5 +115,31 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <EditText
+        android:id="@+id/latitude"
+        android:layout_width="71dp"
+        android:layout_height="33dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="latitude"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/longitude"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/save" />
+
+    <EditText
+        android:id="@+id/longitude"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="longitude"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/locate"
+        app:layout_constraintTop_toBottomOf="@+id/back" />
 
 </android.support.constraint.ConstraintLayout>

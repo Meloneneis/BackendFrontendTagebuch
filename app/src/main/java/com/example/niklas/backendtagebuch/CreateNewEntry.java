@@ -43,6 +43,8 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public EditText date_day;
     public EditText date_month;
     public EditText date_year;
+    public EditText latitude;
+    public EditText longitude;
     public String day;
     public String month;
     public String year;
@@ -61,6 +63,8 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.date_day = (EditText) findViewById(R.id.date_day);
         this.date_month = (EditText) findViewById(R.id.date_month);
         this.date_year = (EditText) findViewById(R.id.date_year);
+        this.latitude = (EditText) findViewById(R.id.latitude);
+        this.longitude = (EditText)findViewById(R.id.longitude);
 
         Intent intent = getIntent();
 
@@ -115,6 +119,12 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                if(latitude.getText().toString() != "" && longitude.getText().toString() != ""){
+                    double lat = new Double(latitude.getText().toString());
+                    double longi = new Double(longitude.getText().toString());
+                    LatLng position = new LatLng(lat,longi);
+                    entry.setLocation(position);
+                }
                 entry.setDate(date_day.getText()+"."+date_month.getText()+"."+date_year.getText());
                 if((entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
                     Toast.makeText(CreateNewEntry.this, "Fehler beim Speichern, bitte alle Angababen befüllen.", Toast.LENGTH_SHORT).show();

@@ -36,10 +36,7 @@ public class EntryOverviewListAdapter extends ArrayAdapter<Entry>  {
 
         ((TextView) view.findViewById(R.id.titletv)).setText(currentEntry.getTitle());
 
-        TextView date = (TextView) view.findViewById(R.id.datetv);
-
-
-        date.setText(currentEntry.getDate());
+        ((TextView) view.findViewById(R.id.datetv)).setText(currentEntry.getDate());
 
         return view;
 
