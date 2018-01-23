@@ -101,20 +101,6 @@ public class EntryDatabase extends SQLiteOpenHelper {
         return entries;
     }
 
-    public Entry updateEntry(final Entry entry){
-        SQLiteDatabase database = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TITLE_COLUMN, entry.getTitle());
-        values.put(DATE_COLUMN, entry.getDate());
-        values.put(CONTENT_COLUMN, entry.getContent());
-        values.put(LATITUDE_COLMUN, entry.getLocation().latitude);
-        values.put(LONGITUDE_COLUMN, entry.getLocation().longitude);
-        database.update(TABLE_NAME, values, ID_COLUMN + " = ?", new String[]{String.valueOf(entry.getId())} );
-        database.close();
-        return this.readEntry(entry.getId());
-
-    }
-
     public void deleteEntry(final Entry entry){
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(TABLE_NAME, ID_COLUMN+" = ?", new String[]{String.valueOf(entry.getId())});
