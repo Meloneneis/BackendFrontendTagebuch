@@ -119,7 +119,7 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if(latitude.getText().toString() != "" && longitude.getText().toString() != ""){
+                if(entry.getLocation()==null){
                     double lat = new Double(latitude.getText().toString());
                     double longi = new Double(longitude.getText().toString());
                     LatLng position = new LatLng(lat,longi);
