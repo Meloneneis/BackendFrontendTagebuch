@@ -73,8 +73,8 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.date_day = (EditText) findViewById(R.id.date_day);
         this.date_month = (EditText) findViewById(R.id.date_month);
         this.date_year = (EditText) findViewById(R.id.date_year);
-        this.latitude = (EditText) findViewById(R.id.latitude);
-        this.longitude = (EditText)findViewById(R.id.Longitude);
+        //this.latitude = (EditText) findViewById(R.id.latitude);
+        //this.longitude = (EditText)findViewById(R.id.Longitude);
 
         Intent intent = getIntent();
 
@@ -167,12 +167,16 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.tlbSave:
-                if(entry.getLocation()==null){
-                    double lat = new Double(latitude.getText().toString());
-                    double longi = new Double(longitude.getText().toString());
-                    LatLng position = new LatLng(lat,longi);
-                    entry.setLocation(position);
-                }
+                /*if(entry.getLocation()==null){
+                    if(latitude.getText().toString()!="" || longitude.getText().toString()!=""){
+                        double lat = new Double(latitude.getText().toString());
+                        double longi = new Double(longitude.getText().toString());
+                        LatLng position = new LatLng(lat,longi);
+                        entry.setLocation(position);
+                    }
+                }*/
+                if(entry.getLocation()==null)
+                    entry.setLocation(new LatLng(0,0));
                 entry.setDate(date_day.getText()+"."+date_month.getText()+"."+date_year.getText());
                 if((entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
                     Toast toast= Toast.makeText(getApplicationContext(), "Fehler beim Speichern, bitte alle Angaben befüllen.", Toast.LENGTH_SHORT);
