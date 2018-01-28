@@ -23,7 +23,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD5PjIHKfKtD6haeEIIYEqqnncKykpCds4" />
+            android:value="AIzaSyCB0FlaOHlxJ52XEpPoND3Rt7ftQeLGjHk" />
         <activity android:name=".CreateNewEntry"></activity>
     </application>
 

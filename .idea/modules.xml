@@ -3,9 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BackendFrontendTagebuch.iml" filepath="$PROJECT_DIR$/BackendFrontendTagebuch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BackendFrontendTagebuch.iml" filepath="$PROJECT_DIR$/BackendFrontendTagebuch.iml" />
       <module fileurl="file://C:\Users\Yannick\Documents\GitHub\BackendFrontendTagebuch\BackendTagebuch.iml" filepath="C:\Users\Yannick\Documents\GitHub\BackendFrontendTagebuch\BackendTagebuch.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\Yannick\Documents\GitHub\BackendFrontendTagebuch\app\app.iml" filepath="C:\Users\Yannick\Documents\GitHub\BackendFrontendTagebuch\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>

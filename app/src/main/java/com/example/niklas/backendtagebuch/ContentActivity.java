@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ContentActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -100,9 +101,9 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.tlbShare:
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String text = entry.getTitle() + "\nverfasst am " + entry.getDate()+ ":\n" + entry.getContent();
+                String text = entry.getTitle() + "\nwritten on " + entry.getDate()+ ":\n" + entry.getContent();
                 intent.putExtra(Intent.EXTRA_TEXT, text);
-                startActivity(Intent.createChooser(intent, "Teile deinen Tag mit:"));
+                startActivity(Intent.createChooser(intent, "Share your day with:"));
                 return true;
             case R.id.miDelete:
                 EntryDatabase database = EntryDatabase.getInstance(ContentActivity.this);
@@ -121,8 +122,11 @@ public class ContentActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(entry.getLocation()));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(entry.getLocation(),15));
+        if(!(entry.getLocation().equals(new LatLng(0,0)))){
+            googleMap.addMarker(new MarkerOptions().position(entry.getLocation()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(entry.getLocation(),15));
+        }
+
     }
     @Override
     public boolean onSupportNavigateUp() {
