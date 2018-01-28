@@ -10,8 +10,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ActionMenuView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,13 +37,13 @@ import java.util.Calendar;
 public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     public Button locateme;
-    public Button back;
+    //public Button back;
     public GoogleMap map;
     public Marker marker;
     public LocationManager locationManager;
     public EditText title;
     public EditText content;
-    public Button save;
+   //public Button save;
     public Entry entry;
     public EditText date_day;
     public EditText date_month;
@@ -49,27 +54,33 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public String month;
     public String year;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_entry);
 
+        getSupportActionBar().setTitle("My Diary: New Entry");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         this.entry = new Entry();
         this.locateme = (Button) findViewById(R.id.locate);
-        this.save = (Button) findViewById(R.id.save);
+//        this.save = (Button) findViewById(R.id.save);
         this.title = (EditText) findViewById(R.id.title);
         this.content = (EditText) findViewById(R.id.content);
-        this.back = (Button) findViewById(R.id.back);
+//        this.back = (Button) findViewById(R.id.back);
         this.date_day = (EditText) findViewById(R.id.date_day);
         this.date_month = (EditText) findViewById(R.id.date_month);
         this.date_year = (EditText) findViewById(R.id.date_year);
         this.latitude = (EditText) findViewById(R.id.latitude);
-        this.longitude = (EditText)findViewById(R.id.longitude);
+        this.longitude = (EditText)findViewById(R.id.Longitude);
 
         Intent intent = getIntent();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragment2);
         mapFragment.getMapAsync(this);
+
 
         this.locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -116,7 +127,7 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        this.save.setOnClickListener(new View.OnClickListener() {
+        /*this.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 if(entry.getLocation()==null){
@@ -133,6 +144,8 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
                 else
                 {
                 EntryDatabase.getInstance(CreateNewEntry.this).createEntry(entry);
+                    Intent intent = new Intent(CreateNewEntry.this, MainActivity.class);
+                    startActivity(intent);
             }}
         });
 
@@ -142,9 +155,45 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
                 Intent intent = new Intent(CreateNewEntry.this, MainActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar2, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tlbSave:
+                if(entry.getLocation()==null){
+                    double lat = new Double(latitude.getText().toString());
+                    double longi = new Double(longitude.getText().toString());
+                    LatLng position = new LatLng(lat,longi);
+                    entry.setLocation(position);
+                }
+                entry.setDate(date_day.getText()+"."+date_month.getText()+"."+date_year.getText());
+                if((entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
+                    Toast toast= Toast.makeText(getApplicationContext(), "Fehler beim Speichern, bitte alle Angaben befüllen.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 200);
+                    toast.show();
+                    return true;
+                }
+                else {
+                    EntryDatabase.getInstance(CreateNewEntry.this).createEntry(entry);
+                    Intent intent = new Intent(CreateNewEntry.this, MainActivity.class);
+                    startActivity(intent);
+                    Toast toast2= Toast.makeText(getApplicationContext(), "Saved.", Toast.LENGTH_SHORT);
+                    toast2.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 200);
+                    toast2.show();
+                    return true;
+                }
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(CreateNewEntry.this, MainActivity.class);
@@ -222,5 +271,9 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         }
 
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
