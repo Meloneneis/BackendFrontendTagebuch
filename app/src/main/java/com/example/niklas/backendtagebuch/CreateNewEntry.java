@@ -190,7 +190,7 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
                 if(entry.getLocation()==null)
                     entry.setLocation(new LatLng(0,0));
                 entry.setDate(date_day.getText()+"."+date_month.getText()+"."+date_year.getText());
-                if((!validateDate() || entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
+                if((entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null) || !validateDate()  ){
                     Toast toast= Toast.makeText(getApplicationContext(), "Fehler beim Speichern, bitte alle Angaben korrekt befüllen.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 200);
                     toast.show();
@@ -218,7 +218,10 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
 
 
     public boolean validateDate(){
-        if(Integer.parseInt(date_day.getText().toString()) > 31 || Integer.parseInt(date_month.getText().toString()) > 12 || Integer.parseInt(date_year.getText().toString()) > 2018) {
+        if((entry.getDate() == null)){
+            return false;
+        }
+        else if(Integer.parseInt(date_day.getText().toString()) > 31 || Integer.parseInt(date_month.getText().toString()) > 12 || Integer.parseInt(date_year.getText().toString()) > 2018) {
             return false;
         }
         return true;
