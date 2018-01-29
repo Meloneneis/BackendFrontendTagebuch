@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
@@ -53,6 +54,7 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     public String day;
     public String month;
     public String year;
+    public Button getdate;
 
 
     @Override
@@ -75,6 +77,7 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
         this.date_year = (EditText) findViewById(R.id.date_year);
         //this.latitude = (EditText) findViewById(R.id.latitude);
         //this.longitude = (EditText)findViewById(R.id.Longitude);
+        this.getdate = (Button) findViewById(R.id.getdate);
 
         Intent intent = getIntent();
 
@@ -125,6 +128,15 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
             public void afterTextChanged(final Editable editable) {
                 entry.setContent(editable.toString().length() == 0 ? null : editable.toString());
             }
+        });
+
+            this.getdate.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(final View view){
+                    date_day.setText(Integer.toString(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
+                    date_month.setText(Integer.toString(Calendar.getInstance().get(Calendar.MONTH))+1);
+                    date_year.setText(Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+                }
         });
 
         /*this.save.setOnClickListener(new View.OnClickListener() {
@@ -178,8 +190,8 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
                 if(entry.getLocation()==null)
                     entry.setLocation(new LatLng(0,0));
                 entry.setDate(date_day.getText()+"."+date_month.getText()+"."+date_year.getText());
-                if((entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
-                    Toast toast= Toast.makeText(getApplicationContext(), "Fehler beim Speichern, bitte alle Angaben befüllen.", Toast.LENGTH_SHORT);
+                if((!validateDate() || entry.getLocation() == null) || (entry.getDate() == null) || (entry.getTitle() == null) || (entry.getContent() == null)){
+                    Toast toast= Toast.makeText(getApplicationContext(), "Fehler beim Speichern, bitte alle Angaben korrekt befüllen.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 200);
                     toast.show();
                     return true;
@@ -205,6 +217,12 @@ public class CreateNewEntry extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
+    public boolean validateDate(){
+        if(Integer.parseInt(date_day.getText().toString()) > 31 || Integer.parseInt(date_month.getText().toString()) > 12 || Integer.parseInt(date_year.getText().toString()) > 2018) {
+            return false;
+        }
+        return true;
+    }
 
     public void searchPosition() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
